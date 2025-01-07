@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F0F4F8;
+  
+}
+
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 500;
+}
+
+h3 {
+  font-weight: 400;
+}
+
+p {
+  font-weight: 300;
+}
+
+button {
+  font-weight: 500;
+}
+
+a {
+  font-weight: 500;
+}
+
+input {
+  font-weight: 300;
+}

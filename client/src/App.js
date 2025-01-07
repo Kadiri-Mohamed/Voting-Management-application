@@ -1,11 +1,16 @@
-import logo from './logo.svg';
+import Dachbord from './Components/Dashbord/Dachbord';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-        <h1 className="text-sm" > Dashboard</h1>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Dachbord />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
