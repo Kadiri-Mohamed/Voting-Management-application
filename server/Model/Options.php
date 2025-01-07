@@ -1,7 +1,7 @@
 <?php
 include './Db.php';
 
-class POlls
+class Options
 {
 
     private $pdo;
