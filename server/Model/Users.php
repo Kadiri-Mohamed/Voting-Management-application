@@ -30,6 +30,13 @@ class Users
         $dem = $this->pdo->prepare("SELECT  (username,created) FROM users  WHERE id=?");
         $dem->execute([$id]);
         return $dem->fetch();
+    
+    }
+    public function findByUsername($username)
+    {
+        $dem = $this->pdo->prepare("SELECT  * FROM users  WHERE username=?");
+        $dem->execute([$username]);
+        return $dem->fetch();
     }
     public function delete($id){
         $dem=$this->pdo->prepare("DELETE FROM users WHERE id=?");

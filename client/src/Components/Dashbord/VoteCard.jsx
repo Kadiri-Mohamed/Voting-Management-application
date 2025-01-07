@@ -4,7 +4,7 @@ import React from "react"
 const VoteCard = (props) => {
 
     return (
-        <Link to={`/vote/${props.id}`}>
+        <Link to={props.shareable_link}>
             <div className=" mt-6 flex w-72 flex-col max-h-52 rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
                 <div className="p-6">
                     <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">

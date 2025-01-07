@@ -53,7 +53,7 @@ const VoteForm = () => {
         
           <button
             type="submit"
-            className="w-full bg-[#213555] hover:bg-[#3E5879] text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-[#3E5879]"
+            className="w-full  bg-[#213555] hover:bg-[#3E5879] text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-[#3E5879]"
           >
             Submit
           </button>
