@@ -1,3 +1,4 @@
+import Header from "./Header";
 import VoteCard from "./VoteCard";
 import 'animate.css';
 
@@ -67,6 +68,7 @@ export default function Home() {
     ];
     return (
         <>
+            <Header/>
             <div className="container mx-auto p-6">
                 <h1 className="text-3xl font-bold mb-4">
                     Public Polls
