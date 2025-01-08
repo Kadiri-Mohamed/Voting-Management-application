@@ -6,7 +6,7 @@ const VoteForm = () => {
  
 
   return (
-    <div className=" bg-[#F0F4F8] flex items-center justify-end ">
+    <div className=" bg-[#F0F4F8] flex items-center justify-end w-96">
       <div className="bg-[#F0F4F8] p-8 border-2 border-[#213555] rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold text-[#3E5879] text-center mb-6">
           Create a Vote
@@ -32,10 +32,7 @@ const VoteForm = () => {
 
         
           <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-[#213555] mb-1"
-            >
+            <label htmlFor="description" className="block text-sm font-medium text-[#213555] mb-1">
               Description:
             </label>
             <textarea
