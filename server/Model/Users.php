@@ -1,5 +1,5 @@
 <?php
-include './Db.php';
+include_once __DIR__ .  '/Db.php';
 
 class Users
 {
@@ -8,11 +8,10 @@ class Users
     public function __construct()
     {
 
-        $this->pdo = new Db()->connect();
+        $this->pdo = new Db();
 
 
     }
-
 
 
     public function create($username, $password)
@@ -29,6 +28,13 @@ class Users
     {
         $dem = $this->pdo->prepare("SELECT  (username,created) FROM users  WHERE id=?");
         $dem->execute([$id]);
+        return $dem->fetch();
+    
+    }
+    public function findByUsername($username)
+    {
+        $dem = $this->pdo->prepare("SELECT  * FROM users  WHERE username=?");
+        $dem->execute([$username]);
         return $dem->fetch();
     }
     public function delete($id){
