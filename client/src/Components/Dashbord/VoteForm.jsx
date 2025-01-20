@@ -1,3 +1,4 @@
+
 import React from "react";
 
 const VoteForm = () => {
@@ -6,8 +7,8 @@ const VoteForm = () => {
  
 
   return (
-    <div className=" bg-[#F0F4F8] flex items-center justify-end ">
-      <div className="bg-[#F0F4F8] p-8 border-2 border-[#213555] rounded-lg shadow-lg w-full max-w-md">
+    <div className=" bg-[#F0F4F8] flex items-center justify-end  w-2/5 ">
+      <div className="bg-[#F0F4F8] p-8 border-2 border-[#213555] rounded-lg shadow-lg w-full">
         <h1 className="text-2xl font-bold text-[#3E5879] text-center mb-6">
           Create a Vote
         </h1>

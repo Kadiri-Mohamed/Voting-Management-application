@@ -1,6 +1,7 @@
 <?php
 
-include './../Models/Users.php';
+// require_once "./../Model/Users.php";
+include_once __DIR__ . '/../Model/Users.php';
 
 class UsersController{
     private $user;

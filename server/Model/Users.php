@@ -1,5 +1,5 @@
 <?php
-include './Db.php';
+include_once __DIR__ .  '/Db.php';
 
 class Users
 {
@@ -8,11 +8,10 @@ class Users
     public function __construct()
     {
 
-        $this->pdo = new Db()->connect();
+        $this->pdo = new Db();
 
 
     }
-
 
 
     public function create($username, $password)

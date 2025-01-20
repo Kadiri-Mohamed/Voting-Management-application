@@ -1,12 +1,30 @@
 <?php
 
+require_once __DIR__ . '/Controllers/UsersController.php'; 
+require_once __DIR__ . '/Controllers/PollsController.php'; 
 
-include_once __DIR__ . '/Controllers/UsersController.php';
-$action  = $_GET['action'] ?? '';
-$userController = new UsersController();
+$action = $_GET['action'] ?? ''; 
+$instance = new UsersController(); 
+$poolinstance = new PollsController(); 
 
 switch ($action) {
-    case 'login':
-        $userController->login();
+    case 'signup':
+        $instance->signUp(); 
+        break;
 
+    case 'login':
+        $instance->logIn(); 
+        break;
+    case 'poll';
+        $poolinstance->find();
+        break;
+        
+
+    default:
+    echo json_encode([
+       
+        'message' => 'non action selected',
+    ]);
+        break;
 }
+?>
