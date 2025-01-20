@@ -1,6 +1,13 @@
 import { useState } from "react";
 
 export default function Auth() {
+
+
+
+    
+
+
+
     const [left, setLeft] = useState("0vw");
     const [user,setUser]=useState('');
     const [Password,setPsseword] = useState('');

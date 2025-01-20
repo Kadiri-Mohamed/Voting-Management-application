@@ -1,6 +1,7 @@
 <?php
 
-include './../Models/Users.php';
+// require_once "./../Model/Users.php";
+include_once __DIR__ . '/../Model/Users.php';
 
 class UsersController{
     private $user;
@@ -76,9 +77,10 @@ class UsersController{
 
         $user = $this->user->findByUsername($username);
         if ($user && password_verify($password, $user['password'])) {
-            return "Login successful!";
+            return json_encode(['user' => $user , 'status' => 'success']);
         } else {
-            return "Error: Invalid username or password.";
+            return json_encode(['user' => $user , 'status' => 'failed']);
+            // return "Error: Invalid username or password.";
         }
     }
 }

@@ -1,20 +1,13 @@
 <?php
-include './Db.php';
-
+include_once __DIR__ .  '/Db.php';
 class Users
 {
     private $pdo;
-
     public function __construct()
     {
 
-        $this->pdo = new Db()->connect();
-
-
+        $this->pdo = new Db();
     }
-
-
-
     public function create($username, $password)
     {
         $dem = $this->pdo->prepare("INSERT INTO users(username,password)VALUE(?,?)");
@@ -27,8 +20,15 @@ class Users
     }
     public function find($id)
     {
-        $dem = $this->pdo->prepare("SELECT  (username,created) FROM users  WHERE id=?");
+        $dem = $this->pdo->prepare("SELECT ( username, email, profile_image) FROM users  WHERE id=?");
         $dem->execute([$id]);
+        return $dem->fetch();
+    
+    }
+    public function findByUsername($username)
+    {
+        $dem = $this->pdo->prepare("SELECT  * FROM users  WHERE username=?");
+        $dem->execute([$username]);
         return $dem->fetch();
     }
     public function delete($id){
