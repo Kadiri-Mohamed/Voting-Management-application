@@ -1,8 +1,11 @@
 <?php
-require_once '../controllers/UserController.php'; 
+
+require_once __DIR__ . '/Controllers/UsersController.php'; 
+require_once __DIR__ . '/Controllers/PollsController.php'; 
 
 $action = $_GET['action'] ?? ''; 
-$instance = new UserController(); 
+$instance = new UsersController(); 
+$poolinstance = new PollsController(); 
 
 switch ($action) {
     case 'signup':
@@ -12,6 +15,10 @@ switch ($action) {
     case 'login':
         $instance->logIn(); 
         break;
+    case 'poll';
+        $poolinstance->find();
+        break;
+        
 
     default:
     echo json_encode([

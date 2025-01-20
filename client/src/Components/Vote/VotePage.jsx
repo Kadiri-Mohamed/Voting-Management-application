@@ -4,11 +4,23 @@ import confetti from 'canvas-confetti';
 import 'animate.css';
 
 function VotePage() {
-	const { id } = useParams();
+	const { voteId } = useParams();
 	const [vote, setVote] = useState({});
 	const [option, setOption] = useState(null);
 	const [prevOption, setPrevOption] = useState(null);
 	const [copied, setCopied] = useState(false);
+
+	useEffect(() => {
+		try {
+			fetch(`http://localhost/server/index.php?action=poll&id=${voteId}`).then(res => res.json()).then(data => setVote(data.pool));
+		} catch (err) {
+			console.log(err);
+		}
+	}, [])
+
+
+
+
 	var colors = ['#3E5879', '#D8C4B6'];
 
 	var end = Date.now() + (.5 * 1000);
@@ -55,48 +67,7 @@ function VotePage() {
 		setPrevOption(selectedOptionId);  // Update the previously selected option
 	};
 
-	useEffect(() => {
-		try {
-			setVote({
-				title: "Title",
-				description: "lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, quod.",
-				options: [
-					{
-						id: 1,
-						title: "Option 1",
-						votes: 5
-					},
-					{
-						id: 2,
-						title: "Option 2",
-						votes: 3
-					},
-					{
-						id: 3,
-						title: "Option 3",
-						votes: 2
-					}
-				]
-			});
-		} catch (err) {
-			setVote({
-				title: "Title",
-				description: "lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, quod.",
-				options: [
-					{
-						id: 1,
-						title: "Option 1",
-						votes: 5
-					},
-					{
-						id: 2,
-						title: "Option 2",
-						votes: 3
-					}
-				]
-			});
-		}
-	}, [id]);
+	
 
 	useEffect(() => {
 		if (option !== null) {
@@ -104,10 +75,10 @@ function VotePage() {
 		}
 	}, [option]);
 
-	const totalVotes = vote.options?.reduce((sum, option) => sum + option.votes, 0) || 1;
+	const totalVotes = vote?.options?.reduce((sum, option) => sum + option?.votes, 0) || 1;
 
 	const generateShareLink = async () => {
-		const shareLink = `${window.location.origin}/vote/${id}`;
+		const shareLink = `${window.location.origin}/vote/${voteId}`;
 		await navigator.clipboard.writeText(shareLink);
 
 		setCopied(true);
@@ -120,29 +91,29 @@ function VotePage() {
 			<div className="mt-6 p-5 flex max-w-6xl mx-auto flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
 				<div className="p-6">
 					<h5 className="mb-2 block font-sans text-5xl text-center font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-						{vote.title ? vote.title : "Title"}
+						{vote?.title }
 					</h5>
 					<p className="block text-4xl font-sans text-center font-light leading-relaxed text-inherit antialiased">
-						{vote.description ? vote.description : "lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, quod."}
+						{vote?.description }
 					</p>
 				</div>
 				<div className="flex mb-10 gap-5 flex-col mx-auto w-1/2 items-center justify-center">
-					{vote.options ? vote.options.map((option, index) => {
-						const percentage = (option.votes / totalVotes) * 100;
+					{vote?.options ? vote.options.map((option, index) => {
+						const percentage = (option.vote_count / totalVotes) * 100;
 						return (
 							<div key={option.id} className="flex w-full">
 								<input
 									type="radio"
 									className='mr-2 scale-150 accent-darkBlue'
 									name='option'
-									id={option.id}
-									value={option.id}
+									id={option.option_id}
+									value={option.option_id}
 									onChange={handleChange}
 								/>
 								<div className="flex w-full flex-col justify-center items-start">
 									<div className="flex justify-between w-full">
 										<h5 className="mb-2 block font-sans text-xs font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-											{option.title}
+											{option.option_text}
 										</h5>
 										<h5 className="mb-2 block font-sans text-xs font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
 											{option.votes}
