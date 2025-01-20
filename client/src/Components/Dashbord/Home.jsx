@@ -71,9 +71,10 @@ export default function Home() {
                 <h1 className="text-3xl font-bold mb-4">
                     Public Polls
                 </h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate__animated animate__fadeIn">
-                    {data.map((item) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+                    {data.map((item , index) => (
                         <VoteCard
+                        className={`animate__animated animate__fadeIn animate__delay-${Math.round(( index +1) *0.8)}s`}
                             key={item.id}
                             id={item.id}
                             title={item.title}

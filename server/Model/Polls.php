@@ -35,7 +35,7 @@ class POlls
         return $dem->execute([$id]);
     }
     public function getAll(){
-        $dem=$this->pdo->prepare("SELECT* FROM polls");
+        $dem=$this->pdo->prepare("SELECT* FROM polls ");
         $dem->execute();
         return $dem->fetchAll();
     }
