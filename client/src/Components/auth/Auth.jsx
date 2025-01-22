@@ -64,22 +64,22 @@ export default function Auth() {
             setErreurmissg("Remplir tout les champ")
         } else {
             let formData = new FormData()
-            formData.append('username', user)
-            formData.append('password', Password)
+            formData.append('username', loginusername)
+            formData.append('password', loginpassword)
 
             fetch('http://localhost:8000/?action=login', {
                 method: 'POST',
                 body: formData
             }).then((data) => data.json())
                 .then((data) => {
-                    if (data.statue == 'success') {
-                        despatch(login(data.user))
+                    if (data.status == 'success') {
                         setMsgsuccess(data.message)
+                        despatch(login(data.user))
                         setErreurmissg('')
                         
                     } else {
                         setMsgsuccess('')
-                        setErreurmissg('')
+                        setErreurmissg(data.message)
                     }
                 })
         }

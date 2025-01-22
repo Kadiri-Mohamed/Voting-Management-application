@@ -85,10 +85,10 @@ class UsersController
         }
 
         $user = $this->user->findByUsername($username);
-        if ($user && password_verify($password, $user['password'])) {
-            return json_encode(['user' => $user, 'status' => 'success']);
+        if ($user && password_verify($password, $user['password_hash'])) {
+            return json_encode(['user' => $user, 'status' => 'success' , 'message'=>"success"]);
         } else {
-            return json_encode(['message' => "UserName Don't Exist", 'status' => 'failed']);
+            return json_encode(['message' => "UserName Or password Wrong", 'status' => 'failed']);
         }
     }
 }
