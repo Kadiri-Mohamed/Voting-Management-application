@@ -19,11 +19,11 @@ class PollsController
 
     public function add()
     {
-        $title = $POST_['title'] ?? null;
-        $description = $POST_['description'] ?? null;
-        $created = $POST_['created'] ?? null;
-        $shareable = $POST_['shareable'] ?? null;
-        $public = $POST_['public'] ?? null;
+        $title = $_POST['title'] ?? null;
+        $description = $_POST['description'] ?? null;
+        $created = $_POST['created'] ?? null;
+        $shareable = $_POST['shareable'] ?? null;
+        $public = $_POST['public'] ?? null;
 
         if (!$title) {
             return "Error: 'title' is required.";
@@ -35,7 +35,7 @@ class PollsController
             return "Error: 'created' is required.";
         }
         if (!$shareable) {
-            return "Error: 'share$shareable' is required.";
+            return "Error: 'shareable' is required.";
         }
         if (!$public) {
             return "Error: 'public' is required.";
@@ -43,15 +43,15 @@ class PollsController
 
         $addSuccess = $this->poll->add($title, $description, $created, $shareable, $public);
         if ($addSuccess) {
-            return "Option add successfully";
+            return "Poll added successfully.";
         } else {
-            return "Error: Failed to add the option";
+            return "Error: Failed to add the poll.";
         }
     }
 
     public function update()
     {
-        $id = $_POST['id'];
+        $id = $_POST['id'] ?? null;
         $title = $_POST['title'] ?? null;
         $description = $_POST['description'] ?? null;
         $created = $_POST['created'] ?? null;
@@ -71,19 +71,20 @@ class PollsController
             return "Error: 'created' is required.";
         }
         if (!$shareable) {
-            return "Error: 'share$shareable' is required.";
+            return "Error: 'shareable' is required.";
         }
         if (!$public) {
             return "Error: 'public' is required.";
         }
 
-        $updateSuccess = $this->poll->update($title, $description, $created, $shareable, $public);
+        $updateSuccess = $this->poll->update($id, $title, $description, $created, $shareable, $public);
         if ($updateSuccess) {
-            return "Option update successfully";
+            return "Poll updated successfully.";
         } else {
-            return "Error: Failed to update the option";
+            return "Error: Failed to update the poll.";
         }
     }
+
     public function delete()
     {
         $id = $_POST['id'] ?? null;
@@ -94,9 +95,9 @@ class PollsController
         $deleteSuccess = $this->poll->delete($id);
 
         if ($deleteSuccess) {
-            return "Option successfully deleted.";
+            return "Poll successfully deleted.";
         } else {
-            return "Error: Failed to delete the option.";
+            return "Error: Failed to delete the poll.";
         }
     }
 
@@ -106,16 +107,55 @@ class PollsController
 
         if (!$id) {
             echo json_encode([
-
-                'message' => 'non ID Given',
+                'message' => 'No ID given.',
             ]);
+            return;
         }
 
         $findSuccess = $this->poll->find($id);
         echo json_encode([
-            'pool'=> $findSuccess,
+            'poll' => $findSuccess,
             'message' => 'success',
         ]);
+    }
+
+    public function getPollsByUserId()
+    {
+        $userId = $_GET['user_id'] ?? null;
+
+        if (!$userId) {
+            return json_encode([
+                "message" => "Error: user_id is required."
+            ]);
+        } else {
+            $polls = $this->poll->getListOfPollsById($userId);
+            if ($polls) {
+                return json_encode([
+                    "message" => "Success",
+                    "poll" => $polls
+                ]);
+            } else {
+                return json_encode([
+                    "message" => "Error: No polls found for the given user_id."
+                ]);
+            }
+        }
+    }
+
+    public function getPublicPolls()
+    {
+        $publicPolls = $this->poll->getAll();
+
+        if ($publicPolls) {
+            return json_encode([
+                "message" => "success",
+                "publicpoll" => $publicPolls
+            ]);
+        } else {
+            return json_encode([
+                "message" => "No public polls found."
+            ]);
+        }
     }
 }
 

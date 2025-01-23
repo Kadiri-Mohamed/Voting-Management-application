@@ -91,4 +91,26 @@ class UsersController
             return json_encode(['message' => "UserName Or password Wrong", 'status' => 'failed']);
         }
     }
+    
+    public function getUserDetails(){
+        $id = $_GET['id'] ?? null;
+
+        if(!$id){
+            return json_encode([
+                'message'=> 'Error :id is required'
+            ]);
+        }
+
+        $userDetails = $this->user->find($id);
+        if($userDetails){
+            return json_encode([
+                'message'=> 'success',
+                'details'=> $userDetails,
+            ]);
+        }else{
+            return json_encode([
+                'message'=> 'Error : no user found with the given id'
+            ]);
+        }
+    }
 }
