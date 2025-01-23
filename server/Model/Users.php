@@ -1,32 +1,27 @@
 <?php
 include_once __DIR__ .  '/Db.php';
-
 class Users
 {
     private $pdo;
-
     public function __construct()
     {
 
-        $this->pdo = new Db();
-
-
+        $temp = new Db();
+        $this->pdo = $temp->connect();
     }
-
-
     public function create($username, $password)
     {
-        $dem = $this->pdo->prepare("INSERT INTO users(username,password)VALUE(?,?)");
+        $dem = $this->pdo->prepare("INSERT INTO users(username,password_hash)VALUE(?,?)");
         return $dem->execute([$username, $password]);
     }
     public function update($id, $username, $password)
     {
-        $dem = $this->pdo->prepare("UPDATE users SET username = ?, password = ? WHERE id = ?");
+        $dem = $this->pdo->prepare("UPDATE users SET username = ?, password_hash = ? WHERE id = ?");
         return $dem->execute([$username, $password, $id]);
     }
     public function find($id)
     {
-        $dem = $this->pdo->prepare("SELECT  (username,created) FROM users  WHERE id=?");
+        $dem = $this->pdo->prepare("SELECT ( username, email, profile_image) FROM users  WHERE id=?");
         $dem->execute([$id]);
         return $dem->fetch();
     

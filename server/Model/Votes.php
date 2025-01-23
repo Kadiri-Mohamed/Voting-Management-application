@@ -8,9 +8,8 @@ class Users
     public function __construct()
     {
 
-        $this->pdo = new Db()->connect();
-
-
+        $temp = new Db();
+        $this->pdo = $temp->connect();
     }
 
 

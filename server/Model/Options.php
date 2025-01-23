@@ -9,9 +9,8 @@ class Options
     public function __construct()
     {
 
-        $this->pdo = new Db()->connect();
-
-
+        $temp = new Db();
+        $this->pdo = $temp->connect();
     }
 
     public function create($poll, $option)

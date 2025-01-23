@@ -1,11 +1,8 @@
 <?php
 include_once __DIR__ . '/Db.php';
-
 class Polls
 {
-
     private $pdo;
-
     public function __construct()
     {
 
@@ -13,7 +10,6 @@ class Polls
         $this->pdo = $temp->connect();
 
     }
-
     public function create($title, $description, $created, $shareable, $public)
     {
         $dem = $this->pdo->prepare("INSERT INTO polls(title,description,created,shareable,public)VALUE(?,?,?,?,?)");
@@ -71,12 +67,15 @@ class Polls
     }
     public function getAll()
     {
-        $dem = $this->pdo->prepare("SELECT* FROM polls");
+        $dem = $this->pdo->prepare("SELECT* FROM polls WHERE public=true");
         $dem->execute();
         return $dem->fetchAll();
     }
-
-
+    public function getListOfPollssById($userId){
+        $dem = $this->pdo->prepare("SELECT* FROM polls WHERE created_by = ?");
+        $dem->execute($userId);
+        return $dem->fetchAll();
+    }
 }
 
 
