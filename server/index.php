@@ -4,7 +4,7 @@ require_once '../controllers/PollsController.php';
 
 
 $action = $_GET['action'] ?? ''; 
-$instance = new UserController(); 
+$instance = new UsersController(); 
 $pool_instance = new PollsController();
 
 switch ($action) {
@@ -24,7 +24,15 @@ switch ($action) {
     case 'getUserDetails':
         $instance->getUserDetails();
         break;
-
+    case 'updateProfile':
+        $instance->updateProfile();
+        break;
+   case 'createPool ':
+        $pool_instance->createPool();
+        break;
+    case ' Vote':
+        $instance-> Vote();
+        break;
 
          
     default:
