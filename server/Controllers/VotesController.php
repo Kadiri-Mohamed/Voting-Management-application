@@ -92,6 +92,50 @@ class VotesController {
         $findSuccess = $this->vote->find($id);
         return $findSuccess;
     }
+
+    public function vote(){
+
+        $userId = $_POST["user_id"] ?? null;
+        $pollId = $_POST["poll_id"] ?? null;
+        $optionId = $_POST["option_id"] ?? null;
+
+        if (!$userId || !$pollId || !$optionId) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'All fields are required (user_id, poll_id, option_id).'
+            ]);
+            return;
+        }
+        
+        $exist = $this->vote->find($pollId,$userId);
+        if($exist){
+            $updateVote = $this->vote->update($pollId,$optionId,$userId);
+            if($updateVote){
+                return json_encode([
+                    'status'=> 'success',
+                    'message'=> 'Vote updated successfully'
+                    ]);
+            }else{
+                return json_encode([
+                    'status'=> 'error',
+                    'message'=> 'Failed to update the vote'
+                ]);
+            }
+        }else{
+            $createVote = $this->vote->create($pollId,$optionId,$userId);
+            if($createVote){
+                return json_encode([
+                    'status'=> 'success',
+                    'message'=> 'Vote created successfully'
+                ]);
+            }else{
+                return json_encode([
+                    'status'=> 'error',
+                    'message'=> 'Failed to submit the vote'
+                ]);
+            }
+        }
+    }
 }
 
 ?>

@@ -157,6 +157,34 @@ class PollsController
             ]);
         }
     }
+
+    public function addPoll()
+    {
+        $title = $_POST['title'] ?? null;
+        $description = $_POST['description'] ?? null;
+        $options = $_POST['option'] ?? [];
+
+        if (!$title || !$description || !is_array($options) || empty($options)) {
+            return json_encode([
+                "message" => "Error: 'title', 'description', and 'option' (list) fields are required."
+            ]);
+        }
+
+        $poll = $this->poll->add($title, $description, $options);
+
+        if ($poll) {
+            return json_encode([
+                "message" => "success"
+            ]);
+        } else {
+            return json_encode([
+                "message" => "Error: Failed to add the poll"
+            ]);
+        }
+    }
+
+    
+
 }
 
 ?>
