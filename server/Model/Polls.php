@@ -10,10 +10,20 @@ class Polls
         $this->pdo = $temp->connect();
 
     }
-    public function create($title, $description, $created, $shareable, $public)
+    public function create($title, $description, $options, $public)
     {
-        $dem = $this->pdo->prepare("INSERT INTO polls(title,description,created,shareable,public)VALUE(?,?,?,?,?)");
-        return $dem->execute([$title, $description, $created, $shareable, $public]);
+        $dem = $this->pdo->prepare("INSERT INTO polls(title,description,public)VALUE(?,?,?)");
+        if ($dem->execute([$title, $description, $public])) {
+            $id = $this->pdo->lastInsertId();
+            $option = new Options();
+            foreach ($options as $opt) {
+                $option->create($id, $opt);
+            }
+
+            return $id;
+        }
+        return false;
+
     }
     public function update($id, $title, $description, $created, $shareable, $public)
     {
@@ -59,6 +69,45 @@ class Polls
 
         return $poll;
     }
+    public function getListOfPollsById($userid)
+    {
+        $dem = $this->pdo->prepare("
+        SELECT polls.poll_id, polls.title, polls.description, options.option_id, options.option_text, 
+               COUNT(votes.option_id) as vote_count
+        FROM polls
+        INNER JOIN options ON polls.poll_id = options.poll_id
+        LEFT JOIN votes ON votes.option_id = options.option_id
+        WHERE polls.user_id = ?
+        GROUP BY options.option_id
+    ");
+        $dem->execute([$userid]);
+
+        $poll = null;
+        $options = [];
+
+        while ($row = $dem->fetch()) {
+            if (!$poll) {
+                $poll = [
+                    'poll_id' => $row['poll_id'],
+                    'title' => $row['title'],
+                    'description' => $row['description'],
+                    'options' => [],
+                ];
+            }
+
+            $options[] = [
+                'option_id' => $row['option_id'],
+                'option_text' => $row['option_text'],
+                'vote_count' => $row['vote_count'], // Include the vote count
+            ];
+        }
+
+        if ($poll) {
+            $poll['options'] = $options;
+        }
+
+        return $poll;
+    }
 
     public function delete($id)
     {
@@ -71,7 +120,8 @@ class Polls
         $dem->execute();
         return $dem->fetchAll();
     }
-    public function getListOfPollssById($userId){
+    public function getListOfPollssById($userId)
+    {
         $dem = $this->pdo->prepare("SELECT* FROM polls WHERE created_by = ?");
         $dem->execute($userId);
         return $dem->fetchAll();

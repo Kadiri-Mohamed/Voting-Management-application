@@ -13,7 +13,7 @@ function App() {
 
   const islogged = useSelector((state) => state.isLogged);
 
-  if (true) {
+  if (islogged) {
     return (
       <Routes>
         <Route path="/dashboard" element={<Dachbord />} />

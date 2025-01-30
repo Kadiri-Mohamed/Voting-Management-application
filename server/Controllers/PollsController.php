@@ -14,40 +14,10 @@ class PollsController
     public function index()
     {
         $data = $this->poll->getAll();
-        return $data;
+        return json_encode($data);
     }
 
-    public function add()
-    {
-        $title = $_POST['title'] ?? null;
-        $description = $_POST['description'] ?? null;
-        $created = $_POST['created'] ?? null;
-        $shareable = $_POST['shareable'] ?? null;
-        $public = $_POST['public'] ?? null;
-
-        if (!$title) {
-            return "Error: 'title' is required.";
-        }
-        if (!$description) {
-            return "Error: 'description' is required.";
-        }
-        if (!$created) {
-            return "Error: 'created' is required.";
-        }
-        if (!$shareable) {
-            return "Error: 'shareable' is required.";
-        }
-        if (!$public) {
-            return "Error: 'public' is required.";
-        }
-
-        $addSuccess = $this->poll->add($title, $description, $created, $shareable, $public);
-        if ($addSuccess) {
-            return "Poll added successfully.";
-        } else {
-            return "Error: Failed to add the poll.";
-        }
-    }
+  
 
     public function update()
     {
@@ -58,30 +28,21 @@ class PollsController
         $shareable = $_POST['shareable'] ?? null;
         $public = $_POST['public'] ?? null;
 
-        if (!$id) {
-            return "Error: 'id' is required.";
-        }
-        if (!$title) {
-            return "Error: 'title' is required.";
-        }
-        if (!$description) {
-            return "Error: 'description' is required.";
-        }
-        if (!$created) {
-            return "Error: 'created' is required.";
-        }
-        if (!$shareable) {
-            return "Error: 'shareable' is required.";
-        }
-        if (!$public) {
-            return "Error: 'public' is required.";
+        if (!$id || !$title || !$description || !$created || !$shareable || !$public) {
+            return json_encode([
+                "message" => "Error: 'id', 'title', 'description', 'created', 'shareable', and 'public' are required."
+            ]);
         }
 
         $updateSuccess = $this->poll->update($id, $title, $description, $created, $shareable, $public);
         if ($updateSuccess) {
-            return "Poll updated successfully.";
+            return json_encode([
+                "message" => "Poll updated successfully."
+            ]);
         } else {
-            return "Error: Failed to update the poll.";
+            return json_encode([
+                "message" => "Error: Failed to update the poll."
+            ]);
         }
     }
 
@@ -89,15 +50,21 @@ class PollsController
     {
         $id = $_POST['id'] ?? null;
         if (!$id) {
-            return "Error: 'id' is required.";
+            return json_encode([
+                "message" => "Error: 'id' is required."
+            ]);
         }
 
         $deleteSuccess = $this->poll->delete($id);
 
         if ($deleteSuccess) {
-            return "Poll successfully deleted.";
+            return json_encode([
+                "message" => "Poll successfully deleted."
+            ]);
         } else {
-            return "Error: Failed to delete the poll.";
+            return json_encode([
+                "message" => "Error: Failed to delete the poll."
+            ]);
         }
     }
 
@@ -106,14 +73,13 @@ class PollsController
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            echo json_encode([
+            return json_encode([
                 'message' => 'No ID given.',
             ]);
-            return;
         }
 
         $findSuccess = $this->poll->find($id);
-        echo json_encode([
+        return json_encode([
             'poll' => $findSuccess,
             'message' => 'success',
         ]);
@@ -154,6 +120,32 @@ class PollsController
         } else {
             return json_encode([
                 "message" => "No public polls found."
+            ]);
+        }
+    }
+
+    public function addPoll()
+    {
+        $title = $_POST['title'] ?? null;
+        $description = $_POST['description'] ?? null;
+        $options = $_POST['option'] ?? [];
+        $public = $_POST['public'] ?? [];
+
+        if (!$title || !$description || !is_array($options) || empty($options)) {
+            return json_encode([
+                "message" => "Error: 'title', 'description', and 'option' (list) fields are required."
+            ]);
+        }
+
+        $poll = $this->poll->create($title, $description, $public ,$options);
+
+        if ($poll) {
+            return json_encode([
+                "message" => "success"
+            ]);
+        } else {
+            return json_encode([
+                "message" => "Error: Failed to add the poll"
             ]);
         }
     }

@@ -1,7 +1,7 @@
 <?php
 include './Db.php';
 
-class Users
+class Votes
 {
     private $pdo;
 
@@ -19,15 +19,15 @@ class Users
         $dem = $this->pdo->prepare("INSERT INTO votes (poll_id,user_id,option_id)VALUE(?,?,?)");
         return $dem->execute([$poll_id, $user_id,$option_id]);
     }
-    public function update($id, $poll_id, $user_id,$option_id)
+    public function update( $poll_id, $user_id,$option_id)
     {
-        $dem = $this->pdo->prepare("UPDATE votes SET poll_id = ?, user_id = ?,option_id=? WHERE id = ?");
-        return $dem->execute([$poll_id, $user_id,$option_id, $id]);
+        $dem = $this->pdo->prepare("UPDATE votes SET option_id=? WHERE poll_id = ? AND user_id = ?");
+        return $dem->execute([$option_id, $poll_id, $user_id]);
     }
-    public function find($id)
+    public function find($pollId, $userId)
     {
-        $dem = $this->pdo->prepare("SELECT  * FROM votes  WHERE id=?");
-        $dem->execute([$id]);
+        $dem = $this->pdo->prepare("SELECT  * FROM votes  WHERE poll_id =? AND user_id = ?");
+        $dem->execute([$pollId, $userId]);
         return $dem->fetch();
     }
     public function delete($id){

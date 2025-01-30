@@ -14,10 +14,10 @@ class Users
         $dem = $this->pdo->prepare("INSERT INTO users(username,password_hash)VALUE(?,?)");
         return $dem->execute([$username, $password]);
     }
-    public function update($id, $username, $password)
+    public function update($id, $username, $hashedPassword, $email, $uploadPath)
     {
-        $dem = $this->pdo->prepare("UPDATE users SET username = ?, password_hash = ? WHERE id = ?");
-        return $dem->execute([$username, $password, $id]);
+        $dem = $this->pdo->prepare("UPDATE users SET username = ?, password_hash = ?  , email = ? , profile_image = ? WHERE id = ?");
+        return $dem->execute([$username, $hashedPassword, $email , $uploadPath,  $id]);
     }
     public function find($id)
     {
