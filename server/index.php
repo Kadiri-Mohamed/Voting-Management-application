@@ -1,29 +1,40 @@
 <?php
-header("Access-Control-Allow-Origin: *"); // Allow requests from React
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); // Specify allowed HTTP methods
-header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Allow specific headers
-header("Access-Control-Allow-Credentials: true"); // If you're using cookies or authentication headers
+require_once '../controllers/UserController.php'; 
+require_once '../controllers/PollsController.php'; 
 
-require_once __DIR__ . '/Controllers/UsersController.php'; 
-require_once __DIR__ . '/Controllers/PollsController.php'; 
 
 $action = $_GET['action'] ?? ''; 
 $instance = new UsersController(); 
-$poolinstance = new PollsController(); 
+$pool_instance = new PollsController();
 
 switch ($action) {
     case 'signup':
-        echo $instance->signUp(); 
+        $instance->signUp(); 
         break;
 
     case 'login':
-        echo $instance->logIn(); 
+        $instance->logIn(); 
         break;
-    case 'poll';
-        $poolinstance->find();
+    case 'getPollsByUserId':
+        $pool_instance->getPollsByUserId();
         break;
-        
+    case 'getPublicPolls' :
+        $pool_instance->getPublicPolls();
+        break;
+    case 'getUserDetails':
+        $instance->getUserDetails();
+        break;
+    case 'updateProfile':
+        $instance->updateProfile();
+        break;
+   case 'createPool ':
+        $pool_instance->createPool();
+        break;
+    case ' Vote':
+        $instance-> Vote();
+        break;
 
+         
     default:
     echo json_encode([
        
