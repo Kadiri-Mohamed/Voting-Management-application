@@ -1,11 +1,13 @@
 <?php
 require_once '../controllers/UserController.php'; 
 require_once '../controllers/PollsController.php'; 
+require_once '../controllers/VotesController.php'; 
 
 
 $action = $_GET['action'] ?? ''; 
 $instance = new UsersController(); 
 $pool_instance = new PollsController();
+$vote_instance = new VotesController();
 
 switch ($action) {
     case 'signup':
@@ -28,10 +30,10 @@ switch ($action) {
         $instance->updateProfile();
         break;
    case 'createPool ':
-        $pool_instance->createPool();
+        $pool_instance->addPoll();
         break;
-    case ' Vote':
-        $instance-> Vote();
+    case 'Vote':
+        $vote_instance->vote();
         break;
 
          
