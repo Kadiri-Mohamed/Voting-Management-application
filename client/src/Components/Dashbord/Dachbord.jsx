@@ -1,15 +1,16 @@
+import { useSelector } from "react-redux";
 import Header from "./Header";
 import UserDetailsForm from "./UserDetailsForm";
 import VoteCard from "./VoteCard";
 import VoteForm from "./VoteForm";
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 const Dachbord = (props) => {
-    const [userVotes, setUserVotes] = React.useState([]);
-    const userId = 1; //TODO: get user id from session or useParams
+    const [userVotes, setUserVotes] = useState([]);
+    const user = useSelector((state) => state.user) //TODO: get user id from session or useParams
     useEffect(() => {
         try {
-            // fetch(`http://localhost/server/index.php?action=getPollsByUserId&id=${userId}`).then(res => res.json()).then(data => setUserVotes(data.pool));
+            fetch(`http://localhost:8000/index.php?action=getPollsByUserId&user_id=${user.user_id}`).then(res => res.json()).then(data => setUserVotes(data.poll || []));
         } catch (err) {
             console.log(err);
         }
@@ -22,14 +23,16 @@ const Dachbord = (props) => {
                 <div className=" flex justify-between">
                     <div className=" w-4/5 ">
                         <UserDetailsForm />
-                        {
-                            //mapping through the votes
-                            userVotes.map((vote) => (
-                                <VoteCard key={vote.id} vote={vote.title} description={vote.description} link={vote.link}/>
-                            ))
-                        }
+                        <div className="flex flex-wrap justify-between mx-4">
+
+                            {
+                                userVotes.map((vote) => (
+                                    <VoteCard key={vote.id} vote={vote.title} description={vote.description} shareable_link={vote.shareable_link} />
+                                ))
+                            }
+                        </div>
                     </div>
-                    <VoteForm   />
+                    <VoteForm />
                 </div>
             </div>
         </>

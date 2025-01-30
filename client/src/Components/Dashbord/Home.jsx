@@ -1,71 +1,20 @@
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import VoteCard from "./VoteCard";
 import 'animate.css';
 
 export default function Home() {
-    const data = [
-        {
-            id: 1,
-            title: "Title 1",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/1",
-        }, {
-            id: 2,
-            title: "Title 2",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/2",
-        }, {
-            id: 3,
-            title: "Title 3",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/3",
-        }, {
-            id: 4,
-            title: "Title 4",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/4",
-        }, {
-            id: 5,
-            title: "Title 5",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/5",
-        }, {
-            id: 6,
-            title: "Title 6",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/6",
-        }, {
-            id: 7,
-            title: "Title 7",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/7",
-        }, {
-            id: 8,
-            title: "Title 8",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/8",
-        }, {
-            id: 9,
-            title: "Title 9",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/9",
-        }, {
-            id: 10,
-            title: "Title 10",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/10",
-        }, {
-            id: 11,
-            title: "Title 11",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/11",
-        }, {
-            id: 12,
-            title: "Title 12",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
-            link: "http://localhost:3000/vote/12",
+    
+    const [data , setData] = useState([]);
+   
+    useEffect(() => {
+        try {
+            fetch(`http://localhost:8000/index.php?action=getPublicPolls`).then(res => res.json()).then(data => setData(data.publicpoll || []));
+        } catch (err) {
+            console.log(err);
         }
-    ];
+    }, [])
+   
     return (
         <>
             <Header/>

@@ -128,16 +128,17 @@ class PollsController
     {
         $title = $_POST['title'] ?? null;
         $description = $_POST['description'] ?? null;
-        $options = $_POST['option'] ?? [];
-        $public = $_POST['public'] ?? [];
-
+        $options = isset($_POST['options']) ? json_decode($_POST['options']) : [];
+        
+        $public = isset($_POST['isPublic']) ? filter_var($_POST['isPublic'], FILTER_VALIDATE_BOOLEAN) : false;
+        $userId = $_POST['user_id'] ?? null;
         if (!$title || !$description || !is_array($options) || empty($options)) {
             return json_encode([
-                "message" => "Error: 'title', 'description', and 'option' (list) fields are required."
+                "message" => "Error: 'title', 'description', and 'options' (list) fields are required."
             ]);
         }
 
-        $poll = $this->poll->create($title, $description, $public ,$options);
+        $poll = $this->poll->create($title, $description, $options, $public , $userId);
 
         if ($poll) {
             return json_encode([

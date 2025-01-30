@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const VoteForm = () => {
   const [options, setOptions] = useState([""]);
-
+  const user = useSelector((state) => state.user);
   const handleOptionChange = (index, value) => {
     const updatedOptions = [...options];
     updatedOptions[index] = value;
@@ -20,12 +21,19 @@ const VoteForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      title: e.target.title.value,
-      description: e.target.description.value,
-      options,
-    });
-    // Add your form submission logic here
+    const formdata = new FormData();
+    formdata.append("title", e.target.title.value);
+    formdata.append("description", e.target.description.value);
+    formdata.append("isPublic", e.target.isPublic.checked);
+    formdata.append("options", JSON.stringify(options));
+    formdata.append("user_id", user.user_id);
+    fetch('http://localhost:8000/?action=createPool', {
+      method: 'POST',
+      body: formdata
+    }).then((data) => data.json()).then((data) => alert(data.message));
+
+    e.target.reset();
+    setOptions([""]);
   };
 
   return (
@@ -110,13 +118,31 @@ const VoteForm = () => {
             </button>
           </div>
 
+          {/* Public Vote Checkbox */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isPublic"
+              name="isPublic"
+              className="h-4 w-4 text-[#213555] focus:ring-[#3E5879] border-gray-300 rounded"
+            />
+            <label
+              htmlFor="isPublic"
+              className="ml-2 block text-sm font-medium text-[#213555]"
+            >
+              Public Vote
+            </label>
+          </div>
+
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-[#213555] hover:bg-[#3E5879] text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-[#3E5879]"
-          >
-            Submit
-          </button>
+            <button
+              type="submit"
+              className="w-full bg-[#213555] hover:bg-[#3E5879] text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-[#3E5879]"
+            >
+              Submit
+            </button>
+          
+          
         </form>
       </div>
     </div>

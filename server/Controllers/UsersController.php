@@ -32,7 +32,7 @@ class UsersController
             return json_encode(['error' => "'username' and 'password' are required."]);
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $signUpSuccess = $this->user->create($username, $hashedPassword);
 
         if ($signUpSuccess) {
@@ -52,7 +52,8 @@ class UsersController
         }
 
         $user = $this->user->findByUsername($username);
-        if ($user && password_verify($password, $user['password'])) {
+        
+        if ($user && password_verify($password, $user['password_hash'])) {
             return json_encode(['user' => $user, 'status' => 'success']);
         } else {
             return json_encode(['error' => "Invalid username or password"]);

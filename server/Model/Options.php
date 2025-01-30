@@ -1,5 +1,5 @@
 <?php
-include './Db.php';
+include_once __DIR__ .  '/Db.php';
 
 class Options
 {
@@ -15,8 +15,8 @@ class Options
 
     public function create($poll, $option)
     {
-        $dem = $this->pdo->prepare("INSERT INTO options(poll,option)VALUE(?,?)");
-        return $dem->execute([$poll, $option,]);
+        $dem = $this->pdo->prepare("INSERT INTO options(poll_id,option_text)VALUE(?,?)");
+        return $dem->execute([$poll, $option]);
     }
 
     public function update($id, $poll_id, $option_text)
